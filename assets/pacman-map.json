@@ -32,7 +32,7 @@
         {
          "columns":16,
          "firstgid":49,
-         "image":"..\/pacman-tiles.png",,
+         "image":"..\/pacman-tiles.png",
          "imageheight":48,
          "imagewidth":256,
          "margin":0,
