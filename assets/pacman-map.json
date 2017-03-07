@@ -19,7 +19,7 @@
         {
          "columns":16,
          "firstgid":1,
-         "image":"C:\/Users\/diuser\/Desktop\/pacman-master\/assets\/pacman-tiles.png",
+         "image":"..\/pacman-tiles.png",
          "imageheight":48,
          "imagewidth":256,
          "margin":0,
@@ -32,7 +32,7 @@
         {
          "columns":16,
          "firstgid":49,
-         "image":"C:\/Users\/diuser\/Desktop\/pacman-master\/assets\/pacman-tiles.png",
+         "image":"..\/pacman-tiles.png",,
          "imageheight":48,
          "imagewidth":256,
          "margin":0,
