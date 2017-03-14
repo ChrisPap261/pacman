@@ -29,7 +29,7 @@
  * XAMPP Apache
  
 **Πηγές:**
- * [pacman.png] (http://stuffpoint.com/pokemon/image/13395-pokemon-pikachu-running.gif)
- * [sprites]    (https://www.spriters-resource.com/game_boy_advance/pokemonemerald/)
- * [dot.png]    (http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)	
- * [dot2.png]   (http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)
+ * [pacman.png](http://stuffpoint.com/pokemon/image/13395-pokemon-pikachu-running.gif)
+ * [sprites](https://www.spriters-resource.com/game_boy_advance/pokemonemerald/)
+ * [dot.png](http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)	
+ * [dot2.png](http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)
