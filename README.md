@@ -18,7 +18,7 @@
 
 **Links:**
  * [Link](https://github.com/ChrisPap261/pacman) προσωπικού Αποθετηρίου: 
- * [Link](https://chrispap261.github.io/pacman/pacman.html) Εκτελέσιμου: 
+ * [Link](https://chrispap261.github.io/pacman/index.html) Εκτελέσιμου: 
  
  
 **Εργαλεία:**
