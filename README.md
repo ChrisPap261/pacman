@@ -33,3 +33,5 @@
  * [sprites](https://www.spriters-resource.com/game_boy_advance/pokemonemerald/)
  * [dot.png](http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)	
  * [dot2.png](http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)
+ * [song.mp3](https://www.youtube.com/watch?v=wR3gaYTqkDQ)
+ * [se.mp3](https://www.youtube.com/watch?v=WVNDyQlJJXc)
