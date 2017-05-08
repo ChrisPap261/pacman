@@ -11,22 +11,33 @@
 			background-attachment : fixed;
 			background-size : 100% auto;
 			
-			
+		
         }
     </style>
-    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script>
+	
+    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script> 
+	<!-- <script src="phaser.min.js"></script> -->
+	
+	<!-- audio player -->
+		<audio  autoplay loop> 
+		<source src="assets/song.mp3" type="audio/mpeg">
+		</audio> 
+	
 </head>
 <body>
 
     <script type="text/javascript">
 
-    var game = new Phaser.Game(496, 528, Phaser.AUTO);
+    var game = new Phaser.Game(496, 544, Phaser.AUTO);
 
     var Pacman = function (game) {
 
         this.map = null;
         this.layer = null;
         this.pacman = null;
+		
+		this.score = 0;/////////////////////////////////////
+		this.scoreText = null;//////////////////////////////
 
         this.safetile = 14;
         this.gridsize = 16;
@@ -42,7 +53,13 @@
 
         this.current = Phaser.NONE;
         this.turning = Phaser.NONE;
-
+		this.lives = 3;/////LIVES//////
+		
+		this.heart1 = null;/////LIVES//////
+		this.heart2 = null;/////LIVES//////
+		this.heart3 = null;/////LIVES//////
+		
+		this.sound_effect = null;////SOUND EFFECT////
     };
 
     Pacman.prototype = {
@@ -67,13 +84,15 @@
             //this.load.crossOrigin = 'anonymous';
 
             this.load.image('dot', 'assets/dot.png');
-	    this.load.image('dot2', 'assets/dot2.png');//2
+			this.load.image('dot2', 'assets/dot2.png');//2
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
             this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
 
+			game.load.image('h', 'assets/heart.png');////LIVES////
             //  Needless to say, graphics (C)opyright Namco
-
+			
+			game.load.audio('SE', 'assets/se.mp3');////SOUND EFFECT////
         },
 
         create: function () {
@@ -84,15 +103,22 @@
             this.layer = this.map.createLayer('Pacman');
 
             this.dots = this.add.physicsGroup();
+			this.dots2 = this.add.physicsGroup();
 
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots);
-			this.map.createFromTiles(15, this.safetile, 'dot2', this.layer, this.dots);
+			this.map.createFromTiles(15, this.safetile, 'dot2', this.layer, this.dots2);
 
             //  The dots will need to be offset by 6px to put them back in the middle of the grid
             this.dots.setAll('x', 2, false, false, 1);
             this.dots.setAll('y', 2, false, false, 1);
 			
-
+			//  The dots will need to be offset by 6px to put them back in the middle of the grid
+            this.dots2.setAll('x', 2, false, false, 1);
+            this.dots2.setAll('y', 2, false, false, 1);
+			
+			// Score texts////////////////////////////////////////////////////////////////
+			this.scoreText = game.add.text(16, 509, "Score: " + this.score, { fontSize: "16px", fill: "#E2665E" });
+			
             //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
 
@@ -107,8 +133,13 @@
             this.cursors = this.input.keyboard.createCursorKeys();
 
             this.pacman.play('munch');
-            this.move(Phaser.LEFT);
-
+            this.move(Phaser.RIGHT);
+			
+			this.heart1 = game.add.sprite(420, 517, 'h');/////LIVES//////
+			this.heart2 = game.add.sprite(440, 517, 'h');/////LIVES//////
+			this.heart3 = game.add.sprite(460, 517, 'h');/////LIVES//////
+			
+			SE1 = game.add.audio('SE');////SOUND EFFECT////
         },
 
         checkKeys: function () {
@@ -229,9 +260,13 @@
 
             dot.kill();
 
+			this.score ++;
+			
             if (this.dots.total === 0)
             {
                 this.dots.callAll('revive');
+				
+				this.score = 0;
             }
 
         },
@@ -239,19 +274,24 @@
 		eatDot2: function (pacman, dot2) {//2
 
             dot2.kill();
+			
+			SE1.play();
 
-            if (this.dots.total === 0)
+			this.score += 10;
+			
+            if (this.dots2.total === 0)
             {
-                this.dots.callAll('revive');
+                this.dots2.callAll('revive');
             }
 
         },
 
         update: function () {
-          
+			this.scoreText.text = "Score: " + this.score;////////////////////////////////////////////////////
+			
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
-			this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot2, null, this);//2
+			this.physics.arcade.overlap(this.pacman, this.dots2, this.eatDot2, null, this);//2
 			
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
@@ -268,7 +308,22 @@
             {
                 this.turn();
             }
-
+			
+			if (this.lives == 2)				/////LIVES//////
+			{
+				this.heart1.visible = false;
+			}
+			
+			if (this.lives == 1)
+			{
+				this.heart1.visible = false;
+				this.heart2.visible = false;
+			}
+			
+			if (this.lives == 0)
+			{
+				//GAME OVER//
+			}									/////LIVES//////	
         }
 
     };
