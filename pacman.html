@@ -130,7 +130,7 @@
             this.rockets.setAll('y', 2, false, false, 1);
 			
 			// Score texts////////////////////////////////////////////////////////////////
-			this.scoreText = game.add.text(16, 513, "Score: " + this.score, { fontSize: "16px", fill: "#E2665E" });
+			this.scoreText = game.add.text(16, 514, "Score: " + this.score, { fontSize: "16px", fill: "#E2665E" });
 			
             //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
@@ -160,7 +160,7 @@
 			timer = game.time.create(false);
 			timer.loop(1000, this.updateCounter, this);
 			timer.start();
-			this.TimeText = game.add.text(210, 513, "Time " + Minutes + ":" + Seconds , { fontSize: "16px", fill: "#E2665E" });
+			this.TimeText = game.add.text(210, 514, "Time " + Minutes + ":" + Seconds , { fontSize: "16px", fill: "#E2665E" });
         },
 		
 		updateCounter: function () {
