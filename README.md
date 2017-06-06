@@ -8,9 +8,9 @@
 
 [Προσωπικό Αποθετηρίο](https://github.com/ChrisPap261/pacman)   
 
-[Εκτελέσιμο](https://chrispap261.github.io/pacman/index.html)
+[Εκτελέσιμο](https://chrispap261.github.io/pacman/pacman.html)
 
-[Github Pages του αποθετηρίου](https://chrispap261.github.io/pacman/)
+[Github Page του αποθετηρίου](https://chrispap261.github.io/pacman/)
 
 ## Εισαγωγή
 Το παρόν project αποτελεί μια παραλλαγή του παιχνιδιού Pac-Man στα πλαίσια της εργασίας για το μάθημα "Τεχνολογία Λογισμικού" του ΣΤ' εξαμήνου στο τμήμα Πληροφορικής του Ιονίου Πανεπιστημίου.
