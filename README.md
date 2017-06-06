@@ -43,7 +43,7 @@
  ![alt text](https://github.com/ChrisPap261/pacman/blob/master/Screenshots/you-win.png "Oθόνη Νίκης")
  ![alt text](https://github.com/ChrisPap261/pacman/blob/master/Screenshots/you-lose.png "Oθόνη Ήττας")
 
-## **Πηγές:**
+## Πηγές:
  * [pacman.png](http://stuffpoint.com/pokemon/image/13395-pokemon-pikachu-running.gif)
  * [sprites](https://www.spriters-resource.com/game_boy_advance/pokemonemerald/)
  * [dot.png](http://retr8bit.com/wp-content/uploads/2014/12/poeballs.png)	
