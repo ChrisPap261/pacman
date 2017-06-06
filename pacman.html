@@ -15,10 +15,10 @@
         }
     </style>
 	
-    <script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script> 
-	<!-- <script src="phaser.min.js"></script> -->
+    <!--<script src="//cdn.jsdelivr.net/phaser/2.2.2/phaser.min.js"></script> -->
+	 <script src="phaser.min.js"></script>
 	
-	<!-- audio player -->
+	<!--audio player -->
 		<audio  autoplay loop> 
 		<source src="assets/song.mp3" type="audio/mpeg">
 		</audio> 
@@ -29,6 +29,10 @@
     <script type="text/javascript">
 
     var game = new Phaser.Game(496, 544, Phaser.AUTO);
+	var timer;///////////////
+	var Minutes = " ";/////
+	var Seconds = " ";/////
+
 
     var Pacman = function (game) {
 
@@ -58,6 +62,8 @@
 		this.heart1 = null;/////LIVES//////
 		this.heart2 = null;/////LIVES//////
 		this.heart3 = null;/////LIVES//////
+		
+		this.sound_effect = null;////SOUND EFFECT////
     };
 
     Pacman.prototype = {
@@ -83,6 +89,7 @@
 
             this.load.image('dot', 'assets/dot.png');
 			this.load.image('dot2', 'assets/dot2.png');//2
+			this.load.image('rocket', 'assets/rocket.png');
             this.load.image('tiles', 'assets/pacman-tiles.png');
             this.load.spritesheet('pacman', 'assets/pacman.png', 32, 32);
             this.load.tilemap('map', 'assets/pacman-map.json', null, Phaser.Tilemap.TILED_JSON);
@@ -91,6 +98,8 @@
             //  Needless to say, graphics (C)opyright Namco
 			
 			game.load.audio('SE', 'assets/se.mp3');////SOUND EFFECT////
+			game.load.audio('RS', 'assets/rocket_sound.mp3');////SOUND EFFECT////
+
         },
 
         create: function () {
@@ -102,9 +111,11 @@
 
             this.dots = this.add.physicsGroup();
 			this.dots2 = this.add.physicsGroup();
+			this.rockets = this.add.physicsGroup();
 
             this.map.createFromTiles(7, this.safetile, 'dot', this.layer, this.dots);
 			this.map.createFromTiles(15, this.safetile, 'dot2', this.layer, this.dots2);
+			this.map.createFromTiles(16, this.safetile, 'rocket', this.layer, this.rockets);
 
             //  The dots will need to be offset by 6px to put them back in the middle of the grid
             this.dots.setAll('x', 2, false, false, 1);
@@ -114,8 +125,12 @@
             this.dots2.setAll('x', 2, false, false, 1);
             this.dots2.setAll('y', 2, false, false, 1);
 			
+			//  The dots will need to be offset by 6px to put them back in the middle of the grid
+            this.rockets.setAll('x', 2, false, false, 1);
+            this.rockets.setAll('y', 2, false, false, 1);
+			
 			// Score texts////////////////////////////////////////////////////////////////
-			this.scoreText = game.add.text(16, 509, "Score: " + this.score, { fontSize: "16px", fill: "#E2665E" });
+			this.scoreText = game.add.text(16, 513, "Score: " + this.score, { fontSize: "16px", fill: "#E2665E" });
 			
             //  Pacman should collide with everything except the safe tile
             this.map.setCollisionByExclusion([this.safetile], true, this.layer);
@@ -138,7 +153,24 @@
 			this.heart3 = game.add.sprite(460, 517, 'h');/////LIVES//////
 			
 			SE1 = game.add.audio('SE');////SOUND EFFECT////
+			RS1 = game.add.audio('RS');////SOUND EFFECT////
+
+			
+			//Time
+			timer = game.time.create(false);
+			timer.loop(1000, this.updateCounter, this);
+			timer.start();
+			this.TimeText = game.add.text(210, 513, "Time " + Minutes + ":" + Seconds , { fontSize: "16px", fill: "#E2665E" });
         },
+		
+		updateCounter: function () {
+			
+			Seconds++;
+			if(Seconds == 59 ){					// TIME: COUNTING MINUTES
+				Minutes++;
+				Seconds = 0;
+			}								
+		},				
 
         checkKeys: function () {
 
@@ -260,11 +292,18 @@
 
 			this.score ++;
 			
+			
+			
             if (this.dots.total === 0)
             {
-                this.dots.callAll('revive');
-				
-				this.score = 0;
+				this.text = game.add.text(145, 110, "CONGRATULATIONS!", { fontSize: "20px", fill: "#FF2D03"});
+				this.text = game.add.text(112, 150, "YOU WIN", { fontSize: "60px", fill: "#FF2D03"});
+				this.text = game.add.text(145, 15, "TO PLAY AGAIN PRESS F5	", { fontSize: "15px", fill: "#fff53e"});
+				this.your_time_text = game.add.text(175, 223, "YOUR TIME: " + Minutes + ":" + Seconds , { fontSize: "20px", fill: "#fff53e"});
+				this.speed = 0;
+                timer.stop();
+				//this.dots.callAll('revive');				
+				//this.score = 0;				
             }
 
         },
@@ -277,19 +316,48 @@
 
 			this.score += 10;
 			
-            if (this.dots2.total === 0)
-            {
-                this.dots2.callAll('revive');
-            }
 
+        },
+		
+		eatRocket: function (pacman, rocket) {//2
+
+            rocket.kill();		
+			
+			RS1.play();			
+
+			this.lives--;
+			
+			if (this.lives == 2)				/////LIVES//////
+			{
+				this.heart1.visible = false;
+			}
+			
+			if (this.lives == 1)
+			{
+				//this.heart1.visible = false;
+				this.heart2.visible = false;
+			}
+			
+			if (this.lives == 0)
+			{
+				this.heart3.visible = false;
+				this.text = game.add.text(90, 150, "YOU LOSE", { fontSize: "60px", fill: "#FF2D03"});
+				this.text = game.add.text(145, 15, "TO PLAY AGAIN PRESS F5	", { fontSize: "15px", fill: "#fff53e"});
+				this.your_time_text = game.add.text(175, 223, "YOUR TIME: " + Minutes + ":" + Seconds , { fontSize: "20px", fill: "#fff53e"});
+				this.speed = 0;
+                timer.stop();			
+			}
         },
 
         update: function () {
 			this.scoreText.text = "Score: " + this.score;////////////////////////////////////////////////////
 			
+			this.TimeText.text = "Time " + Minutes + ":" + Seconds ;
+			
             this.physics.arcade.collide(this.pacman, this.layer);
             this.physics.arcade.overlap(this.pacman, this.dots, this.eatDot, null, this);
 			this.physics.arcade.overlap(this.pacman, this.dots2, this.eatDot2, null, this);//2
+			this.physics.arcade.overlap(this.pacman, this.rockets, this.eatRocket, null, this);//2			
 			
             this.marker.x = this.math.snapToFloor(Math.floor(this.pacman.x), this.gridsize) / this.gridsize;
             this.marker.y = this.math.snapToFloor(Math.floor(this.pacman.y), this.gridsize) / this.gridsize;
@@ -327,7 +395,7 @@
     };
 
     game.state.add('Game', Pacman, true);
-
+	
     </script>
 
 </body>
